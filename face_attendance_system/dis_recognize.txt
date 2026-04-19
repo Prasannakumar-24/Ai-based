@@ -1,0 +1,620 @@
+241           0 RESUME                   0
+
+252           2 NOP
+
+253           4 LOAD_FAST                0 (self)
+              6 LOAD_ATTR                0 (trained)
+             16 POP_JUMP_FORWARD_IF_TRUE    17 (to 52)
+
+254          18 LOAD_GLOBAL              3 (NULL + print)
+             30 LOAD_CONST               1 ('[DEBUG] Recognizer not trained yet')
+             32 PRECALL                  1
+             36 CALL                     1
+             46 POP_TOP
+
+255          48 LOAD_CONST               2 ((None, None, 0, None))
+             50 RETURN_VALUE
+
+257     >>   52 LOAD_GLOBAL              5 (NULL + len)
+             64 LOAD_FAST                0 (self)
+             66 LOAD_ATTR                3 (user_id_map)
+             76 PRECALL                  1
+             80 CALL                     1
+             90 LOAD_CONST               3 (0)
+             92 COMPARE_OP               2 (==)
+             98 POP_JUMP_FORWARD_IF_FALSE    17 (to 134)
+
+258         100 LOAD_GLOBAL              3 (NULL + print)
+            112 LOAD_CONST               4 ('[DEBUG] No users in user_id_map')
+            114 PRECALL                  1
+            118 CALL                     1
+            128 POP_TOP
+
+259         130 LOAD_CONST               2 ((None, None, 0, None))
+            132 RETURN_VALUE
+
+262     >>  134 LOAD_GLOBAL              9 (NULL + cv2)
+            146 LOAD_ATTR                5 (cvtColor)
+            156 LOAD_FAST                1 (frame)
+            158 LOAD_GLOBAL              8 (cv2)
+            170 LOAD_ATTR                6 (COLOR_BGR2GRAY)
+            180 PRECALL                  2
+            184 CALL                     2
+            194 STORE_FAST               2 (gray)
+
+263         196 LOAD_GLOBAL              9 (NULL + cv2)
+            208 LOAD_ATTR                7 (equalizeHist)
+            218 LOAD_FAST                2 (gray)
+            220 PRECALL                  1
+            224 CALL                     1
+            234 STORE_FAST               3 (gray_eq)
+
+266         236 BUILD_LIST               0
+            238 STORE_FAST               4 (faces)
+
+269         240 LOAD_FAST                0 (self)
+            242 LOAD_ATTR                8 (face_cascade)
+            252 LOAD_METHOD              9 (detectMultiScale)
+
+270         274 LOAD_FAST                3 (gray_eq)
+            276 LOAD_CONST               5 (1.05)
+            278 LOAD_CONST               6 (3)
+            280 LOAD_CONST               7 ((40, 40))
+            282 LOAD_CONST               8 ((300, 300))
+
+269         284 KW_NAMES                 9
+            286 PRECALL                  5
+            290 CALL                     5
+            300 STORE_FAST               5 (faces1)
+
+272         302 LOAD_FAST                4 (faces)
+            304 LOAD_METHOD             10 (extend)
+            326 LOAD_FAST                5 (faces1)
+            328 PRECALL                  1
+            332 CALL                     1
+            342 POP_TOP
+
+275         344 LOAD_FAST                0 (self)
+            346 LOAD_ATTR                8 (face_cascade)
+            356 LOAD_METHOD              9 (detectMultiScale)
+
+276         378 LOAD_FAST                3 (gray_eq)
+            380 LOAD_CONST              10 (1.2)
+            382 LOAD_CONST              11 (2)
+            384 LOAD_CONST              12 ((30, 30))
+            386 LOAD_CONST              13 ((400, 400))
+
+275         388 KW_NAMES                 9
+            390 PRECALL                  5
+            394 CALL                     5
+            404 STORE_FAST               6 (faces2)
+
+278         406 LOAD_FAST                4 (faces)
+            408 LOAD_METHOD             10 (extend)
+            430 LOAD_FAST                6 (faces2)
+            432 PRECALL                  1
+            436 CALL                     1
+            446 POP_TOP
+
+280         448 LOAD_GLOBAL              5 (NULL + len)
+            460 LOAD_FAST                4 (faces)
+            462 PRECALL                  1
+            466 CALL                     1
+            476 LOAD_CONST               3 (0)
+            478 COMPARE_OP               2 (==)
+            484 POP_JUMP_FORWARD_IF_FALSE    17 (to 520)
+
+282         486 LOAD_GLOBAL              3 (NULL + print)
+            498 LOAD_CONST              14 ('[NO FACES] No faces detected in frame')
+            500 PRECALL                  1
+            504 CALL                     1
+            514 POP_TOP
+
+283         516 LOAD_CONST               2 ((None, None, 0, None))
+            518 RETURN_VALUE
+
+286     >>  520 LOAD_GLOBAL             23 (NULL + sorted)
+            532 LOAD_FAST                4 (faces)
+            534 LOAD_CONST              15 (<code object <lambda> at 0x0000024DA71CDED0, file "C:\Users\ADMIN\Downloads\python\face_attendance_system\face_recognition_cv2.py", line 286>)
+            536 MAKE_FUNCTION            0
+            538 LOAD_CONST              16 (True)
+            540 KW_NAMES                17
+            542 PRECALL                  3
+            546 CALL                     3
+            556 STORE_FAST               4 (faces)
+
+287         558 LOAD_FAST                4 (faces)
+            560 LOAD_CONST               3 (0)
+            562 BINARY_SUBSCR
+            572 UNPACK_SEQUENCE          4
+            576 STORE_FAST               7 (x)
+            578 STORE_FAST               8 (y)
+            580 STORE_FAST               9 (w)
+            582 STORE_FAST              10 (h)
+
+288         584 LOAD_FAST                7 (x)
+            586 LOAD_FAST                8 (y)
+            588 LOAD_FAST                9 (w)
+            590 LOAD_FAST               10 (h)
+            592 BUILD_TUPLE              4
+            594 STORE_FAST              11 (face_box)
+
+289         596 LOAD_GLOBAL              3 (NULL + print)
+            608 LOAD_CONST              18 ('[FACE DETECTED] Box: (')
+            610 LOAD_FAST                7 (x)
+            612 FORMAT_VALUE             0
+            614 LOAD_CONST              19 (', ')
+            616 LOAD_FAST                8 (y)
+            618 FORMAT_VALUE             0
+            620 LOAD_CONST              19 (', ')
+            622 LOAD_FAST                9 (w)
+            624 FORMAT_VALUE             0
+            626 LOAD_CONST              19 (', ')
+            628 LOAD_FAST               10 (h)
+            630 FORMAT_VALUE             0
+            632 LOAD_CONST              20 (') - Area: ')
+            634 LOAD_FAST                9 (w)
+            636 LOAD_FAST               10 (h)
+            638 BINARY_OP                5 (*)
+            642 FORMAT_VALUE             0
+            644 BUILD_STRING            10
+            646 PRECALL                  1
+            650 CALL                     1
+            660 POP_TOP
+
+291         662 LOAD_FAST                3 (gray_eq)
+            664 LOAD_FAST                8 (y)
+            666 LOAD_FAST                8 (y)
+            668 LOAD_FAST               10 (h)
+            670 BINARY_OP                0 (+)
+            674 BUILD_SLICE              2
+            676 LOAD_FAST                7 (x)
+            678 LOAD_FAST                7 (x)
+            680 LOAD_FAST                9 (w)
+            682 BINARY_OP                0 (+)
+            686 BUILD_SLICE              2
+            688 BUILD_TUPLE              2
+            690 BINARY_SUBSCR
+            700 STORE_FAST              12 (face_roi)
+
+292         702 LOAD_GLOBAL              9 (NULL + cv2)
+            714 LOAD_ATTR               12 (resize)
+            724 LOAD_FAST               12 (face_roi)
+            726 LOAD_CONST              21 ((200, 200))
+            728 PRECALL                  2
+            732 CALL                     2
+            742 STORE_FAST              12 (face_roi)
+
+295         744 LOAD_CONST              22 (None)
+            746 STORE_FAST              13 (predicted_id)
+
+296         748 LOAD_CONST              22 (None)
+            750 STORE_FAST              14 (confidence)
+
+298         752 NOP
+
+299         754 LOAD_FAST                0 (self)
+            756 LOAD_ATTR               13 (face_recognizer)
+            766 LOAD_METHOD             14 (predict)
+            788 LOAD_FAST               12 (face_roi)
+            790 PRECALL                  1
+            794 CALL                     1
+            804 UNPACK_SEQUENCE          2
+            808 STORE_FAST              13 (predicted_id)
+            810 STORE_FAST              14 (confidence)
+
+300         812 LOAD_GLOBAL              3 (NULL + print)
+            824 LOAD_CONST              23 ('[PREDICT RESULT] ID: ')
+            826 LOAD_FAST               13 (predicted_id)
+            828 FORMAT_VALUE             0
+            830 LOAD_CONST              24 (', Raw Confidence: ')
+            832 LOAD_FAST               14 (confidence)
+            834 LOAD_CONST              25 ('.1f')
+            836 FORMAT_VALUE             4 (with format)
+            838 BUILD_STRING             4
+            840 PRECALL                  1
+            844 CALL                     1
+            854 POP_TOP
+            856 JUMP_FORWARD           115 (to 1088)
+        >>  858 PUSH_EXC_INFO
+
+301         860 LOAD_GLOBAL              8 (cv2)
+            872 LOAD_ATTR               15 (error)
+            882 CHECK_EXC_MATCH
+            884 POP_JUMP_FORWARD_IF_FALSE    34 (to 954)
+            886 STORE_FAST              15 (e)
+
+302         888 LOAD_GLOBAL              3 (NULL + print)
+            900 LOAD_CONST              26 ('[PREDICT ERROR] ')
+            902 LOAD_FAST               15 (e)
+            904 FORMAT_VALUE             0
+            906 BUILD_STRING             2
+            908 PRECALL                  1
+            912 CALL                     1
+            922 POP_TOP
+
+303         924 LOAD_CONST              22 (None)
+            926 LOAD_CONST              22 (None)
+            928 LOAD_CONST               3 (0)
+            930 LOAD_FAST               11 (face_box)
+            932 BUILD_TUPLE              4
+            934 SWAP                     2
+            936 POP_EXCEPT
+            938 LOAD_CONST              22 (None)
+            940 STORE_FAST              15 (e)
+            942 DELETE_FAST             15 (e)
+            944 RETURN_VALUE
+        >>  946 LOAD_CONST              22 (None)
+            948 STORE_FAST              15 (e)
+            950 DELETE_FAST             15 (e)
+            952 RERAISE                  1
+
+304     >>  954 LOAD_GLOBAL             32 (Exception)
+            966 CHECK_EXC_MATCH
+            968 POP_JUMP_FORWARD_IF_FALSE    55 (to 1080)
+            970 STORE_FAST              15 (e)
+
+305         972 LOAD_GLOBAL              3 (NULL + print)
+            984 LOAD_CONST              27 ('[PREDICT EXCEPTION] ')
+            986 LOAD_GLOBAL             35 (NULL + type)
+            998 LOAD_FAST               15 (e)
+           1000 PRECALL                  1
+           1004 CALL                     1
+           1014 LOAD_ATTR               18 (__name__)
+           1024 FORMAT_VALUE             0
+           1026 LOAD_CONST              28 (': ')
+           1028 LOAD_FAST               15 (e)
+           1030 FORMAT_VALUE             0
+           1032 BUILD_STRING             4
+           1034 PRECALL                  1
+           1038 CALL                     1
+           1048 POP_TOP
+
+306        1050 LOAD_CONST              22 (None)
+           1052 LOAD_CONST              22 (None)
+           1054 LOAD_CONST               3 (0)
+           1056 LOAD_FAST               11 (face_box)
+           1058 BUILD_TUPLE              4
+           1060 SWAP                     2
+           1062 POP_EXCEPT
+           1064 LOAD_CONST              22 (None)
+           1066 STORE_FAST              15 (e)
+           1068 DELETE_FAST             15 (e)
+           1070 RETURN_VALUE
+        >> 1072 LOAD_CONST              22 (None)
+           1074 STORE_FAST              15 (e)
+           1076 DELETE_FAST             15 (e)
+           1078 RERAISE                  1
+
+304     >> 1080 RERAISE                  0
+        >> 1082 COPY                     3
+           1084 POP_EXCEPT
+           1086 RERAISE                  1
+
+311     >> 1088 LOAD_FAST               13 (predicted_id)
+           1090 LOAD_FAST                0 (self)
+           1092 LOAD_ATTR                3 (user_id_map)
+           1102 CONTAINS_OP              1
+           1104 POP_JUMP_FORWARD_IF_FALSE    92 (to 1290)
+
+312        1106 LOAD_GLOBAL              3 (NULL + print)
+           1118 LOAD_CONST              29 ('[UNKNOWN ID] Predicted ID ')
+           1120 LOAD_FAST               13 (predicted_id)
+           1122 FORMAT_VALUE             0
+           1124 LOAD_CONST              30 (' not in map. Available: ')
+           1126 LOAD_GLOBAL             39 (NULL + list)
+           1138 LOAD_FAST                0 (self)
+           1140 LOAD_ATTR                3 (user_id_map)
+           1150 LOAD_METHOD             20 (keys)
+           1172 PRECALL                  0
+           1176 CALL                     0
+           1186 PRECALL                  1
+           1190 CALL                     1
+           1200 FORMAT_VALUE             0
+           1202 BUILD_STRING             4
+           1204 PRECALL                  1
+           1208 CALL                     1
+           1218 POP_TOP
+
+313        1220 LOAD_FAST               14 (confidence)
+           1222 POP_JUMP_FORWARD_IF_NONE    25 (to 1274)
+           1224 LOAD_GLOBAL             43 (NULL + max)
+           1236 LOAD_CONST               3 (0)
+           1238 LOAD_CONST              31 (100)
+           1240 LOAD_FAST               14 (confidence)
+           1242 LOAD_CONST              32 (255.0)
+           1244 BINARY_OP               11 (/)
+           1248 LOAD_CONST              31 (100)
+           1250 BINARY_OP                5 (*)
+           1254 BINARY_OP               10 (-)
+           1258 PRECALL                  2
+           1262 CALL                     2
+           1272 JUMP_FORWARD             1 (to 1276)
+        >> 1274 LOAD_CONST               3 (0)
+        >> 1276 STORE_FAST              16 (confidence_percent)
+
+314        1278 LOAD_CONST              22 (None)
+           1280 LOAD_CONST              22 (None)
+           1282 LOAD_FAST               16 (confidence_percent)
+           1284 LOAD_FAST               11 (face_box)
+           1286 BUILD_TUPLE              4
+           1288 RETURN_VALUE
+
+317     >> 1290 LOAD_GLOBAL             43 (NULL + max)
+           1302 LOAD_CONST               3 (0)
+           1304 LOAD_CONST              31 (100)
+           1306 LOAD_FAST               14 (confidence)
+           1308 LOAD_CONST              32 (255.0)
+           1310 BINARY_OP               11 (/)
+           1314 LOAD_CONST              31 (100)
+           1316 BINARY_OP                5 (*)
+           1320 BINARY_OP               10 (-)
+           1324 PRECALL                  2
+           1328 CALL                     2
+           1338 STORE_FAST              16 (confidence_percent)
+
+319        1340 LOAD_GLOBAL              3 (NULL + print)
+           1352 LOAD_CONST              33 ('[RECOGNIZED FACE] Predicted ID: ')
+           1354 LOAD_FAST               13 (predicted_id)
+           1356 FORMAT_VALUE             0
+           1358 LOAD_CONST              34 (', Confidence: ')
+           1360 LOAD_FAST               14 (confidence)
+           1362 LOAD_CONST              25 ('.1f')
+           1364 FORMAT_VALUE             4 (with format)
+           1366 LOAD_CONST              35 ('/255, Percent: ')
+           1368 LOAD_FAST               16 (confidence_percent)
+           1370 LOAD_CONST              25 ('.1f')
+           1372 FORMAT_VALUE             4 (with format)
+           1374 LOAD_CONST              36 ('%')
+           1376 BUILD_STRING             7
+           1378 PRECALL                  1
+           1382 CALL                     1
+           1392 POP_TOP
+
+327        1394 LOAD_FAST               14 (confidence)
+           1396 LOAD_CONST              37 (230)
+           1398 COMPARE_OP               0 (<)
+           1404 EXTENDED_ARG             1
+           1406 POP_JUMP_FORWARD_IF_FALSE   257 (to 1922)
+
+328        1408 LOAD_FAST                0 (self)
+           1410 LOAD_ATTR                3 (user_id_map)
+           1420 LOAD_FAST               13 (predicted_id)
+           1422 BINARY_SUBSCR
+           1432 STORE_FAST              17 (user_id)
+
+329        1434 LOAD_GLOBAL              3 (NULL + print)
+           1446 LOAD_CONST              38 ('[GET USER] user_id_map[')
+           1448 LOAD_FAST               13 (predicted_id)
+           1450 FORMAT_VALUE             0
+           1452 LOAD_CONST              39 ('] = ')
+           1454 LOAD_FAST               17 (user_id)
+           1456 FORMAT_VALUE             0
+           1458 BUILD_STRING             4
+           1460 PRECALL                  1
+           1464 CALL                     1
+           1474 POP_TOP
+
+331        1476 LOAD_FAST                0 (self)
+           1478 LOAD_ATTR               22 (db)
+           1488 LOAD_METHOD             23 (get_user_by_id)
+           1510 LOAD_FAST               17 (user_id)
+           1512 PRECALL                  1
+           1516 CALL                     1
+           1526 STORE_FAST              18 (user)
+
+333        1528 LOAD_FAST               18 (user)
+           1530 POP_JUMP_FORWARD_IF_NOT_NONE    24 (to 1580)
+
+334        1532 LOAD_GLOBAL              3 (NULL + print)
+           1544 LOAD_CONST              40 ('[USER NOT FOUND] user_id: ')
+           1546 LOAD_FAST               17 (user_id)
+           1548 FORMAT_VALUE             0
+           1550 BUILD_STRING             2
+           1552 PRECALL                  1
+           1556 CALL                     1
+           1566 POP_TOP
+
+335        1568 LOAD_CONST              22 (None)
+           1570 LOAD_CONST              22 (None)
+           1572 LOAD_FAST               16 (confidence_percent)
+           1574 LOAD_FAST               11 (face_box)
+           1576 BUILD_TUPLE              4
+           1578 RETURN_VALUE
+
+337     >> 1580 LOAD_FAST               18 (user)
+           1582 LOAD_METHOD             24 (get)
+           1604 LOAD_CONST              41 ('name')
+           1606 LOAD_CONST              42 ('Unknown')
+           1608 PRECALL                  2
+           1612 CALL                     2
+           1622 STORE_FAST              19 (name)
+
+338        1624 LOAD_GLOBAL              3 (NULL + print)
+           1636 LOAD_CONST              43 ('[USER RETRIEVED] name: ')
+           1638 LOAD_FAST               19 (name)
+           1640 FORMAT_VALUE             0
+           1642 BUILD_STRING             2
+           1644 PRECALL                  1
+           1648 CALL                     1
+           1658 POP_TOP
+
+341        1660 LOAD_GLOBAL             51 (NULL + time)
+           1672 LOAD_ATTR               25 (time)
+           1682 PRECALL                  0
+           1686 CALL                     0
+           1696 STORE_FAST              20 (current_time)
+
+342        1698 LOAD_FAST               17 (user_id)
+           1700 LOAD_FAST                0 (self)
+           1702 LOAD_ATTR               26 (last_recognized)
+           1712 CONTAINS_OP              0
+           1714 POP_JUMP_FORWARD_IF_FALSE    64 (to 1844)
+
+343        1716 LOAD_FAST               20 (current_time)
+           1718 LOAD_FAST                0 (self)
+           1720 LOAD_ATTR               26 (last_recognized)
+           1730 LOAD_FAST               17 (user_id)
+           1732 BINARY_SUBSCR
+           1742 BINARY_OP               10 (-)
+           1746 STORE_FAST              21 (time_diff)
+
+344        1748 LOAD_FAST               21 (time_diff)
+           1750 LOAD_FAST                0 (self)
+           1752 LOAD_ATTR               27 (cooldown_seconds)
+           1762 COMPARE_OP               0 (<)
+           1768 POP_JUMP_FORWARD_IF_FALSE    37 (to 1844)
+
+345        1770 LOAD_GLOBAL              3 (NULL + print)
+           1782 LOAD_CONST              44 ('[COOLDOWN] ')
+           1784 LOAD_FAST               19 (name)
+           1786 FORMAT_VALUE             0
+           1788 LOAD_CONST              45 (' - ')
+           1790 LOAD_FAST               21 (time_diff)
+           1792 LOAD_CONST              25 ('.1f')
+           1794 FORMAT_VALUE             4 (with format)
+           1796 LOAD_CONST              46 ('s since last recognition (')
+           1798 LOAD_FAST                0 (self)
+           1800 LOAD_ATTR               27 (cooldown_seconds)
+           1810 FORMAT_VALUE             0
+           1812 LOAD_CONST              47 ('s cooldown)')
+           1814 BUILD_STRING             7
+           1816 PRECALL                  1
+           1820 CALL                     1
+           1830 POP_TOP
+
+346        1832 LOAD_CONST              22 (None)
+           1834 LOAD_CONST              22 (None)
+           1836 LOAD_FAST               16 (confidence_percent)
+           1838 LOAD_FAST               11 (face_box)
+           1840 BUILD_TUPLE              4
+           1842 RETURN_VALUE
+
+348     >> 1844 LOAD_FAST               20 (current_time)
+           1846 LOAD_FAST                0 (self)
+           1848 LOAD_ATTR               26 (last_recognized)
+           1858 LOAD_FAST               17 (user_id)
+           1860 STORE_SUBSCR
+
+349        1864 LOAD_GLOBAL              3 (NULL + print)
+           1876 LOAD_CONST              48 ('✅ [SUCCESS] ')
+           1878 LOAD_FAST               19 (name)
+           1880 FORMAT_VALUE             0
+           1882 LOAD_CONST              49 (' recognized with confidence ')
+           1884 LOAD_FAST               14 (confidence)
+           1886 LOAD_CONST              25 ('.1f')
+           1888 FORMAT_VALUE             4 (with format)
+           1890 LOAD_CONST              50 ('/255')
+           1892 BUILD_STRING             5
+           1894 PRECALL                  1
+           1898 CALL                     1
+           1908 POP_TOP
+
+350        1910 LOAD_FAST               17 (user_id)
+           1912 LOAD_FAST               19 (name)
+           1914 LOAD_FAST               16 (confidence_percent)
+           1916 LOAD_FAST               11 (face_box)
+           1918 BUILD_TUPLE              4
+           1920 RETURN_VALUE
+
+352     >> 1922 LOAD_GLOBAL              3 (NULL + print)
+           1934 LOAD_CONST              51 ('⚠️  [CONFIDENCE TOO HIGH] ')
+           1936 LOAD_FAST               14 (confidence)
+           1938 LOAD_CONST              25 ('.1f')
+           1940 FORMAT_VALUE             4 (with format)
+           1942 LOAD_CONST              52 (' > 230 (threshold)')
+           1944 BUILD_STRING             3
+           1946 PRECALL                  1
+           1950 CALL                     1
+           1960 POP_TOP
+
+354        1962 LOAD_CONST              22 (None)
+           1964 LOAD_CONST              22 (None)
+           1966 LOAD_FAST               16 (confidence_percent)
+           1968 LOAD_FAST               11 (face_box)
+           1970 BUILD_TUPLE              4
+           1972 RETURN_VALUE
+        >> 1974 PUSH_EXC_INFO
+
+356        1976 LOAD_GLOBAL             32 (Exception)
+           1988 CHECK_EXC_MATCH
+           1990 POP_JUMP_FORWARD_IF_FALSE    74 (to 2140)
+           1992 STORE_FAST              15 (e)
+
+357        1994 LOAD_GLOBAL              3 (NULL + print)
+           2006 LOAD_CONST              53 ('❌ [EXCEPTION] Recognition error: ')
+           2008 LOAD_GLOBAL             35 (NULL + type)
+           2020 LOAD_FAST               15 (e)
+           2022 PRECALL                  1
+           2026 CALL                     1
+           2036 LOAD_ATTR               18 (__name__)
+           2046 FORMAT_VALUE             0
+           2048 LOAD_CONST              28 (': ')
+           2050 LOAD_FAST               15 (e)
+           2052 FORMAT_VALUE             0
+           2054 BUILD_STRING             4
+           2056 PRECALL                  1
+           2060 CALL                     1
+           2070 POP_TOP
+
+358        2072 LOAD_CONST               3 (0)
+           2074 LOAD_CONST              22 (None)
+           2076 IMPORT_NAME             28 (traceback)
+           2078 STORE_FAST              22 (traceback)
+
+359        2080 LOAD_FAST               22 (traceback)
+           2082 LOAD_METHOD             29 (print_exc)
+           2104 PRECALL                  0
+           2108 CALL                     0
+           2118 POP_TOP
+
+360        2120 POP_EXCEPT
+           2122 LOAD_CONST              22 (None)
+           2124 STORE_FAST              15 (e)
+           2126 DELETE_FAST             15 (e)
+           2128 LOAD_CONST               2 ((None, None, 0, None))
+           2130 RETURN_VALUE
+        >> 2132 LOAD_CONST              22 (None)
+           2134 STORE_FAST              15 (e)
+           2136 DELETE_FAST             15 (e)
+           2138 RERAISE                  1
+
+356     >> 2140 RERAISE                  0
+        >> 2142 COPY                     3
+           2144 POP_EXCEPT
+           2146 RERAISE                  1
+ExceptionTable:
+  4 to 46 -> 1974 [0]
+  52 to 128 -> 1974 [0]
+  134 to 514 -> 1974 [0]
+  520 to 750 -> 1974 [0]
+  754 to 854 -> 858 [0]
+  856 to 856 -> 1974 [0]
+  858 to 886 -> 1082 [1] lasti
+  888 to 932 -> 946 [1] lasti
+  934 to 934 -> 1082 [1] lasti
+  936 to 942 -> 1974 [0]
+  946 to 970 -> 1082 [1] lasti
+  972 to 1058 -> 1072 [1] lasti
+  1060 to 1060 -> 1082 [1] lasti
+  1062 to 1068 -> 1974 [0]
+  1072 to 1080 -> 1082 [1] lasti
+  1082 to 1286 -> 1974 [0]
+  1290 to 1576 -> 1974 [0]
+  1580 to 1840 -> 1974 [0]
+  1844 to 1918 -> 1974 [0]
+  1922 to 1970 -> 1974 [0]
+  1974 to 1992 -> 2142 [1] lasti
+  1994 to 2118 -> 2132 [1] lasti
+  2132 to 2140 -> 2142 [1] lasti
+
+Disassembly of <code object <lambda> at 0x0000024DA71CDED0, file "C:\Users\ADMIN\Downloads\python\face_attendance_system\face_recognition_cv2.py", line 286>:
+286           0 RESUME                   0
+              2 LOAD_FAST                0 (x)
+              4 LOAD_CONST               1 (2)
+              6 BINARY_SUBSCR
+             16 LOAD_FAST                0 (x)
+             18 LOAD_CONST               2 (3)
+             20 BINARY_SUBSCR
+             30 BINARY_OP                5 (*)
+             34 RETURN_VALUE

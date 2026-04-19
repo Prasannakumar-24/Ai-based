@@ -1,0 +1,687 @@
+362           0 RESUME                   0
+
+366           2 NOP
+
+367           4 LOAD_GLOBAL              1 (NULL + cv2)
+             16 LOAD_ATTR                1 (VideoCapture)
+             26 LOAD_CONST               1 (0)
+             28 PRECALL                  1
+             32 CALL                     1
+             42 STORE_FAST               1 (cap)
+
+369          44 LOAD_FAST                1 (cap)
+             46 LOAD_METHOD              2 (isOpened)
+             68 PRECALL                  0
+             72 CALL                     0
+             82 POP_JUMP_FORWARD_IF_TRUE    17 (to 118)
+
+370          84 LOAD_GLOBAL              7 (NULL + print)
+             96 LOAD_CONST               2 ('❌ Error: Could not open camera')
+             98 PRECALL                  1
+            102 CALL                     1
+            112 POP_TOP
+
+371         114 LOAD_CONST               3 (None)
+            116 RETURN_VALUE
+
+373     >>  118 LOAD_GLOBAL              7 (NULL + print)
+            130 LOAD_CONST               4 ('\n🎥 Starting attendance monitoring...')
+            132 PRECALL                  1
+            136 CALL                     1
+            146 POP_TOP
+
+374         148 LOAD_GLOBAL              7 (NULL + print)
+            160 LOAD_CONST               5 ("Press 'q' to stop\n")
+            162 PRECALL                  1
+            166 CALL                     1
+            176 POP_TOP
+
+376         178 LOAD_CONST               1 (0)
+            180 STORE_FAST               2 (frame_count)
+
+377         182 LOAD_GLOBAL              9 (NULL + time)
+            194 LOAD_ATTR                4 (time)
+            204 PRECALL                  0
+            208 CALL                     0
+            218 STORE_FAST               3 (last_print_time)
+
+379         220 NOP
+
+380     >>  222 LOAD_FAST                1 (cap)
+            224 LOAD_METHOD              5 (read)
+            246 PRECALL                  0
+            250 CALL                     0
+            260 UNPACK_SEQUENCE          2
+            264 STORE_FAST               4 (ret)
+            266 STORE_FAST               5 (frame)
+
+381         268 LOAD_FAST                4 (ret)
+            270 POP_JUMP_FORWARD_IF_TRUE    17 (to 306)
+
+382         272 LOAD_GLOBAL              7 (NULL + print)
+            284 LOAD_CONST               7 ('[ERROR] Failed to read frame from camera')
+            286 PRECALL                  1
+            290 CALL                     1
+            300 POP_TOP
+
+383         302 EXTENDED_ARG             4
+            304 JUMP_FORWARD          1110 (to 2526)
+
+385     >>  306 LOAD_FAST                2 (frame_count)
+            308 LOAD_CONST               8 (1)
+            310 BINARY_OP               13 (+=)
+            314 STORE_FAST               2 (frame_count)
+
+386         316 LOAD_GLOBAL              9 (NULL + time)
+            328 LOAD_ATTR                4 (time)
+            338 PRECALL                  0
+            342 CALL                     0
+            352 STORE_FAST               6 (current_time)
+
+389         354 LOAD_FAST                0 (self)
+            356 LOAD_METHOD              6 (recognize_face)
+            378 LOAD_FAST                5 (frame)
+            380 PRECALL                  1
+            384 CALL                     1
+            394 UNPACK_SEQUENCE          4
+            398 STORE_FAST               7 (user_id)
+            400 STORE_FAST               8 (name)
+            402 STORE_FAST               9 (confidence)
+            404 STORE_FAST              10 (face_box)
+
+392         406 LOAD_FAST               10 (face_box)
+            408 EXTENDED_ARG             1
+            410 POP_JUMP_FORWARD_IF_NONE   263 (to 938)
+
+394         412 LOAD_GLOBAL              1 (NULL + cv2)
+            424 LOAD_ATTR                7 (cvtColor)
+            434 LOAD_FAST                5 (frame)
+            436 LOAD_GLOBAL              0 (cv2)
+            448 LOAD_ATTR                8 (COLOR_BGR2GRAY)
+            458 PRECALL                  2
+            462 CALL                     2
+            472 STORE_FAST              11 (gray)
+
+395         474 LOAD_GLOBAL              1 (NULL + cv2)
+            486 LOAD_ATTR                9 (equalizeHist)
+            496 LOAD_FAST               11 (gray)
+            498 PRECALL                  1
+            502 CALL                     1
+            512 STORE_FAST              12 (gray_eq)
+
+397         514 LOAD_FAST                0 (self)
+            516 LOAD_ATTR               10 (face_cascade)
+            526 LOAD_METHOD             11 (detectMultiScale)
+
+398         548 LOAD_FAST               12 (gray_eq)
+            550 LOAD_CONST               9 (1.05)
+            552 LOAD_CONST              10 (3)
+            554 LOAD_CONST              11 ((40, 40))
+            556 LOAD_CONST              12 ((300, 300))
+
+397         558 KW_NAMES                13
+            560 PRECALL                  5
+            564 CALL                     5
+            574 STORE_FAST              13 (faces)
+
+401         576 LOAD_GLOBAL             25 (NULL + len)
+            588 LOAD_FAST               13 (faces)
+            590 PRECALL                  1
+            594 CALL                     1
+            604 LOAD_CONST               1 (0)
+            606 COMPARE_OP               2 (==)
+            612 POP_JUMP_FORWARD_IF_FALSE    31 (to 676)
+
+402         614 LOAD_FAST                0 (self)
+            616 LOAD_ATTR               10 (face_cascade)
+            626 LOAD_METHOD             11 (detectMultiScale)
+
+403         648 LOAD_FAST               12 (gray_eq)
+            650 LOAD_CONST              14 (1.2)
+            652 LOAD_CONST              15 (2)
+            654 LOAD_CONST              16 ((30, 30))
+            656 LOAD_CONST              17 ((400, 400))
+
+402         658 KW_NAMES                13
+            660 PRECALL                  5
+            664 CALL                     5
+            674 STORE_FAST              13 (faces)
+
+406     >>  676 LOAD_GLOBAL             25 (NULL + len)
+            688 LOAD_FAST               13 (faces)
+            690 PRECALL                  1
+            694 CALL                     1
+            704 LOAD_CONST               1 (0)
+            706 COMPARE_OP               4 (>)
+            712 POP_JUMP_FORWARD_IF_FALSE   112 (to 938)
+
+407         714 LOAD_GLOBAL             27 (NULL + sorted)
+            726 LOAD_FAST               13 (faces)
+            728 LOAD_CONST              18 (<code object <lambda> at 0x0000014C980DFD70, file "C:\Users\ADMIN\Downloads\python\face_attendance_system\face_recognition_cv2.py", line 407>)
+            730 MAKE_FUNCTION            0
+            732 LOAD_CONST               6 (True)
+            734 KW_NAMES                19
+            736 PRECALL                  3
+            740 CALL                     3
+            750 STORE_FAST              13 (faces)
+
+408         752 LOAD_FAST               13 (faces)
+            754 LOAD_CONST               1 (0)
+            756 BINARY_SUBSCR
+            766 UNPACK_SEQUENCE          4
+            770 STORE_FAST              14 (x)
+            772 STORE_FAST              15 (y)
+            774 STORE_FAST              16 (w)
+            776 STORE_FAST              17 (h)
+
+409         778 LOAD_GLOBAL              1 (NULL + cv2)
+            790 LOAD_ATTR               14 (rectangle)
+            800 LOAD_FAST                5 (frame)
+            802 LOAD_FAST               14 (x)
+            804 LOAD_FAST               15 (y)
+            806 BUILD_TUPLE              2
+            808 LOAD_FAST               14 (x)
+            810 LOAD_FAST               16 (w)
+            812 BINARY_OP                0 (+)
+            816 LOAD_FAST               15 (y)
+            818 LOAD_FAST               17 (h)
+            820 BINARY_OP                0 (+)
+            824 BUILD_TUPLE              2
+            826 LOAD_CONST              20 ((0, 255, 0))
+            828 LOAD_CONST              15 (2)
+            830 PRECALL                  5
+            834 CALL                     5
+            844 POP_TOP
+
+410         846 LOAD_GLOBAL              1 (NULL + cv2)
+            858 LOAD_ATTR               15 (putText)
+            868 LOAD_FAST                5 (frame)
+            870 LOAD_CONST              21 ('Confidence: ')
+            872 LOAD_FAST                9 (confidence)
+            874 LOAD_CONST              22 ('.1f')
+            876 FORMAT_VALUE             4 (with format)
+            878 LOAD_CONST              23 ('%')
+            880 BUILD_STRING             3
+            882 LOAD_FAST               14 (x)
+            884 LOAD_FAST               15 (y)
+            886 LOAD_CONST              24 (10)
+            888 BINARY_OP               10 (-)
+            892 BUILD_TUPLE              2
+
+411         894 LOAD_GLOBAL              0 (cv2)
+            906 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+            916 LOAD_CONST              25 (0.7)
+            918 LOAD_CONST              20 ((0, 255, 0))
+            920 LOAD_CONST               8 (1)
+
+410         922 PRECALL                  7
+            926 CALL                     7
+            936 POP_TOP
+
+413     >>  938 LOAD_FAST                7 (user_id)
+            940 EXTENDED_ARG             1
+            942 POP_JUMP_FORWARD_IF_FALSE   336 (to 1616)
+            944 LOAD_FAST                8 (name)
+            946 EXTENDED_ARG             1
+            948 POP_JUMP_FORWARD_IF_FALSE   333 (to 1616)
+
+414         950 LOAD_GLOBAL              7 (NULL + print)
+            962 LOAD_CONST              26 ('[ATTENDANCE ATTEMPT] Marking ')
+            964 LOAD_FAST                8 (name)
+            966 FORMAT_VALUE             0
+            968 LOAD_CONST              27 (' as present...')
+            970 BUILD_STRING             3
+            972 PRECALL                  1
+            976 CALL                     1
+            986 POP_TOP
+
+415         988 LOAD_FAST                0 (self)
+            990 LOAD_ATTR               17 (db)
+           1000 LOAD_METHOD             18 (mark_attendance)
+           1022 LOAD_FAST                7 (user_id)
+           1024 LOAD_FAST                8 (name)
+           1026 PRECALL                  2
+           1030 CALL                     2
+           1040 STORE_FAST              18 (success)
+
+417        1042 LOAD_FAST               18 (success)
+           1044 POP_JUMP_FORWARD_IF_FALSE   165 (to 1376)
+
+419        1046 LOAD_GLOBAL              1 (NULL + cv2)
+           1058 LOAD_ATTR               14 (rectangle)
+           1068 LOAD_FAST                5 (frame)
+           1070 LOAD_CONST              28 ((10, 30))
+           1072 LOAD_CONST              29 ((400, 140))
+           1074 LOAD_CONST              20 ((0, 255, 0))
+           1076 LOAD_CONST              10 (3)
+           1078 PRECALL                  5
+           1082 CALL                     5
+           1092 POP_TOP
+
+420        1094 LOAD_GLOBAL              1 (NULL + cv2)
+           1106 LOAD_ATTR               15 (putText)
+           1116 LOAD_FAST                5 (frame)
+           1118 LOAD_CONST              30 ('✓ ')
+           1120 LOAD_FAST                8 (name)
+           1122 FORMAT_VALUE             0
+           1124 BUILD_STRING             2
+           1126 LOAD_CONST              31 ((15, 60))
+
+421        1128 LOAD_GLOBAL              0 (cv2)
+           1140 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           1150 LOAD_CONST              32 (1.3)
+           1152 LOAD_CONST              20 ((0, 255, 0))
+           1154 LOAD_CONST              15 (2)
+
+420        1156 PRECALL                  7
+           1160 CALL                     7
+           1170 POP_TOP
+
+422        1172 LOAD_GLOBAL              1 (NULL + cv2)
+           1184 LOAD_ATTR               15 (putText)
+           1194 LOAD_FAST                5 (frame)
+           1196 LOAD_CONST              21 ('Confidence: ')
+           1198 LOAD_FAST                9 (confidence)
+           1200 LOAD_CONST              22 ('.1f')
+           1202 FORMAT_VALUE             4 (with format)
+           1204 LOAD_CONST              23 ('%')
+           1206 BUILD_STRING             3
+           1208 LOAD_CONST              33 ((15, 95))
+
+423        1210 LOAD_GLOBAL              0 (cv2)
+           1222 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           1232 LOAD_CONST               8 (1)
+           1234 LOAD_CONST              20 ((0, 255, 0))
+           1236 LOAD_CONST              15 (2)
+
+422        1238 PRECALL                  7
+           1242 CALL                     7
+           1252 POP_TOP
+
+424        1254 LOAD_GLOBAL              1 (NULL + cv2)
+           1266 LOAD_ATTR               15 (putText)
+           1276 LOAD_FAST                5 (frame)
+           1278 LOAD_CONST              34 ('✓ ATTENDANCE MARKED!')
+           1280 LOAD_CONST              35 ((15, 130))
+
+425        1282 LOAD_GLOBAL              0 (cv2)
+           1294 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           1304 LOAD_CONST               8 (1)
+           1306 LOAD_CONST              20 ((0, 255, 0))
+           1308 LOAD_CONST              15 (2)
+
+424        1310 PRECALL                  7
+           1314 CALL                     7
+           1324 POP_TOP
+
+426        1326 LOAD_GLOBAL              7 (NULL + print)
+           1338 LOAD_CONST              36 ('✅ MARKED PRESENT: ')
+           1340 LOAD_FAST                8 (name)
+           1342 FORMAT_VALUE             0
+           1344 LOAD_CONST              37 (' (Confidence: ')
+           1346 LOAD_FAST                9 (confidence)
+           1348 LOAD_CONST              22 ('.1f')
+           1350 FORMAT_VALUE             4 (with format)
+           1352 LOAD_CONST              38 ('%)\n')
+           1354 BUILD_STRING             5
+           1356 PRECALL                  1
+           1360 CALL                     1
+           1370 POP_TOP
+           1372 EXTENDED_ARG             1
+           1374 JUMP_FORWARD           467 (to 2310)
+
+429     >> 1376 LOAD_GLOBAL              1 (NULL + cv2)
+           1388 LOAD_ATTR               14 (rectangle)
+           1398 LOAD_FAST                5 (frame)
+           1400 LOAD_CONST              28 ((10, 30))
+           1402 LOAD_CONST              39 ((450, 100))
+           1404 LOAD_CONST              40 ((0, 165, 255))
+           1406 LOAD_CONST              10 (3)
+           1408 PRECALL                  5
+           1412 CALL                     5
+           1422 POP_TOP
+
+430        1424 LOAD_GLOBAL              1 (NULL + cv2)
+           1436 LOAD_ATTR               15 (putText)
+           1446 LOAD_FAST                5 (frame)
+           1448 LOAD_CONST              41 ('Already marked: ')
+           1450 LOAD_FAST                8 (name)
+           1452 FORMAT_VALUE             0
+           1454 BUILD_STRING             2
+           1456 LOAD_CONST              42 ((15, 65))
+
+431        1458 LOAD_GLOBAL              0 (cv2)
+           1470 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           1480 LOAD_CONST               8 (1)
+           1482 LOAD_CONST              40 ((0, 165, 255))
+           1484 LOAD_CONST              15 (2)
+
+430        1486 PRECALL                  7
+           1490 CALL                     7
+           1500 POP_TOP
+
+432        1502 LOAD_GLOBAL              1 (NULL + cv2)
+           1514 LOAD_ATTR               15 (putText)
+           1524 LOAD_FAST                5 (frame)
+           1526 LOAD_CONST              43 ('(Attendance already recorded)')
+           1528 LOAD_CONST              33 ((15, 95))
+
+433        1530 LOAD_GLOBAL              0 (cv2)
+           1542 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           1552 LOAD_CONST              44 (0.8)
+           1554 LOAD_CONST              40 ((0, 165, 255))
+           1556 LOAD_CONST              15 (2)
+
+432        1558 PRECALL                  7
+           1562 CALL                     7
+           1572 POP_TOP
+
+434        1574 LOAD_GLOBAL              7 (NULL + print)
+           1586 LOAD_CONST              45 ('⚠️  ALREADY MARKED: ')
+           1588 LOAD_FAST                8 (name)
+           1590 FORMAT_VALUE             0
+           1592 LOAD_CONST              46 ('\n')
+           1594 BUILD_STRING             3
+           1596 PRECALL                  1
+           1600 CALL                     1
+           1610 POP_TOP
+           1612 EXTENDED_ARG             1
+           1614 JUMP_FORWARD           347 (to 2310)
+
+435     >> 1616 LOAD_FAST               10 (face_box)
+           1618 EXTENDED_ARG             1
+           1620 POP_JUMP_FORWARD_IF_NONE   272 (to 2166)
+
+436        1622 LOAD_CONST              47 ('unknown_face')
+           1624 STORE_FAST              19 (unknown_id)
+
+437        1626 LOAD_CONST              48 ('Unknown Face')
+           1628 STORE_FAST              20 (unknown_name)
+
+438        1630 LOAD_GLOBAL              7 (NULL + print)
+           1642 LOAD_CONST              49 ('[ATTENDANCE ATTEMPT] Face detected but not recognized - marking unknown face present')
+           1644 PRECALL                  1
+           1648 CALL                     1
+           1658 POP_TOP
+
+439        1660 LOAD_FAST                0 (self)
+           1662 LOAD_ATTR               17 (db)
+           1672 LOAD_METHOD             18 (mark_attendance)
+           1694 LOAD_FAST               19 (unknown_id)
+           1696 LOAD_FAST               20 (unknown_name)
+           1698 PRECALL                  2
+           1702 CALL                     2
+           1712 STORE_FAST              18 (success)
+
+441        1714 LOAD_FAST               18 (success)
+           1716 POP_JUMP_FORWARD_IF_FALSE   112 (to 1942)
+
+443        1718 LOAD_GLOBAL              1 (NULL + cv2)
+           1730 LOAD_ATTR               14 (rectangle)
+           1740 LOAD_FAST                5 (frame)
+           1742 LOAD_CONST              28 ((10, 30))
+           1744 LOAD_CONST              50 ((450, 120))
+           1746 LOAD_CONST              51 ((255, 165, 0))
+           1748 LOAD_CONST              10 (3)
+           1750 PRECALL                  5
+           1754 CALL                     5
+           1764 POP_TOP
+
+444        1766 LOAD_GLOBAL              1 (NULL + cv2)
+           1778 LOAD_ATTR               15 (putText)
+           1788 LOAD_FAST                5 (frame)
+           1790 LOAD_CONST              52 ('Face detected')
+           1792 LOAD_CONST              31 ((15, 60))
+
+445        1794 LOAD_GLOBAL              0 (cv2)
+           1806 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           1816 LOAD_CONST              53 (1.1)
+           1818 LOAD_CONST              51 ((255, 165, 0))
+           1820 LOAD_CONST              15 (2)
+
+444        1822 PRECALL                  7
+           1826 CALL                     7
+           1836 POP_TOP
+
+446        1838 LOAD_GLOBAL              1 (NULL + cv2)
+           1850 LOAD_ATTR               15 (putText)
+           1860 LOAD_FAST                5 (frame)
+           1862 LOAD_CONST              54 ('Unknown face marked present')
+           1864 LOAD_CONST              33 ((15, 95))
+
+447        1866 LOAD_GLOBAL              0 (cv2)
+           1878 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           1888 LOAD_CONST              44 (0.8)
+           1890 LOAD_CONST              51 ((255, 165, 0))
+           1892 LOAD_CONST              15 (2)
+
+446        1894 PRECALL                  7
+           1898 CALL                     7
+           1908 POP_TOP
+
+448        1910 LOAD_GLOBAL              7 (NULL + print)
+           1922 LOAD_CONST              55 ('✅ Unknown face attendance marked\n')
+           1924 PRECALL                  1
+           1928 CALL                     1
+           1938 POP_TOP
+           1940 JUMP_FORWARD           184 (to 2310)
+
+450     >> 1942 LOAD_GLOBAL              1 (NULL + cv2)
+           1954 LOAD_ATTR               14 (rectangle)
+           1964 LOAD_FAST                5 (frame)
+           1966 LOAD_CONST              28 ((10, 30))
+           1968 LOAD_CONST              50 ((450, 120))
+           1970 LOAD_CONST              40 ((0, 165, 255))
+           1972 LOAD_CONST              10 (3)
+           1974 PRECALL                  5
+           1978 CALL                     5
+           1988 POP_TOP
+
+451        1990 LOAD_GLOBAL              1 (NULL + cv2)
+           2002 LOAD_ATTR               15 (putText)
+           2012 LOAD_FAST                5 (frame)
+           2014 LOAD_CONST              52 ('Face detected')
+           2016 LOAD_CONST              31 ((15, 60))
+
+452        2018 LOAD_GLOBAL              0 (cv2)
+           2030 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           2040 LOAD_CONST              53 (1.1)
+           2042 LOAD_CONST              40 ((0, 165, 255))
+           2044 LOAD_CONST              15 (2)
+
+451        2046 PRECALL                  7
+           2050 CALL                     7
+           2060 POP_TOP
+
+453        2062 LOAD_GLOBAL              1 (NULL + cv2)
+           2074 LOAD_ATTR               15 (putText)
+           2084 LOAD_FAST                5 (frame)
+           2086 LOAD_CONST              56 ('Unknown face already marked today')
+           2088 LOAD_CONST              33 ((15, 95))
+
+454        2090 LOAD_GLOBAL              0 (cv2)
+           2102 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           2112 LOAD_CONST              44 (0.8)
+           2114 LOAD_CONST              40 ((0, 165, 255))
+           2116 LOAD_CONST              15 (2)
+
+453        2118 PRECALL                  7
+           2122 CALL                     7
+           2132 POP_TOP
+
+455        2134 LOAD_GLOBAL              7 (NULL + print)
+           2146 LOAD_CONST              57 ('⚠️ Unknown face already marked today\n')
+           2148 PRECALL                  1
+           2152 CALL                     1
+           2162 POP_TOP
+           2164 JUMP_FORWARD            72 (to 2310)
+
+458     >> 2166 LOAD_GLOBAL              1 (NULL + cv2)
+           2178 LOAD_ATTR               15 (putText)
+           2188 LOAD_FAST                5 (frame)
+           2190 LOAD_CONST              58 ('No face detected')
+           2192 LOAD_CONST              59 ((10, 40))
+
+459        2194 LOAD_GLOBAL              0 (cv2)
+           2206 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           2216 LOAD_CONST              60 (0.9)
+           2218 LOAD_CONST              61 ((0, 0, 255))
+           2220 LOAD_CONST              15 (2)
+
+458        2222 PRECALL                  7
+           2226 CALL                     7
+           2236 POP_TOP
+
+460        2238 LOAD_GLOBAL              1 (NULL + cv2)
+           2250 LOAD_ATTR               15 (putText)
+           2260 LOAD_FAST                5 (frame)
+           2262 LOAD_CONST              62 ('Look at camera')
+           2264 LOAD_CONST              63 ((10, 70))
+
+461        2266 LOAD_GLOBAL              0 (cv2)
+           2278 LOAD_ATTR               16 (FONT_HERSHEY_SIMPLEX)
+           2288 LOAD_CONST              25 (0.7)
+           2290 LOAD_CONST              61 ((0, 0, 255))
+           2292 LOAD_CONST               8 (1)
+
+460        2294 PRECALL                  7
+           2298 CALL                     7
+           2308 POP_TOP
+
+464     >> 2310 LOAD_FAST                6 (current_time)
+           2312 LOAD_FAST                3 (last_print_time)
+           2314 BINARY_OP               10 (-)
+           2318 LOAD_CONST              64 (5)
+           2320 COMPARE_OP               5 (>=)
+           2326 POP_JUMP_FORWARD_IF_FALSE    20 (to 2368)
+
+465        2328 LOAD_GLOBAL              7 (NULL + print)
+           2340 LOAD_CONST              65 ('[STATUS] Monitoring active... Frame: ')
+           2342 LOAD_FAST                2 (frame_count)
+           2344 FORMAT_VALUE             0
+           2346 BUILD_STRING             2
+           2348 PRECALL                  1
+           2352 CALL                     1
+           2362 POP_TOP
+
+466        2364 LOAD_FAST                6 (current_time)
+           2366 STORE_FAST               3 (last_print_time)
+
+469     >> 2368 LOAD_GLOBAL              1 (NULL + cv2)
+           2380 LOAD_ATTR               19 (imshow)
+           2390 LOAD_CONST              66 ('Attendance Monitoring')
+           2392 LOAD_FAST                5 (frame)
+           2394 PRECALL                  2
+           2398 CALL                     2
+           2408 POP_TOP
+
+472        2410 LOAD_GLOBAL              1 (NULL + cv2)
+           2422 LOAD_ATTR               20 (waitKey)
+           2432 LOAD_CONST               8 (1)
+           2434 PRECALL                  1
+           2438 CALL                     1
+           2448 LOAD_CONST              67 (255)
+           2450 BINARY_OP                1 (&)
+           2454 LOAD_GLOBAL             43 (NULL + ord)
+           2466 LOAD_CONST              68 ('q')
+           2468 PRECALL                  1
+           2472 CALL                     1
+           2482 COMPARE_OP               2 (==)
+           2488 POP_JUMP_FORWARD_IF_FALSE    16 (to 2522)
+
+473        2490 LOAD_GLOBAL              7 (NULL + print)
+           2502 LOAD_CONST              69 ("[USER STOP] 'q' pressed")
+           2504 PRECALL                  1
+           2508 CALL                     1
+           2518 POP_TOP
+
+474        2520 JUMP_FORWARD             2 (to 2526)
+
+379     >> 2522 EXTENDED_ARG             4
+           2524 JUMP_BACKWARD         1152 (to 222)
+
+476     >> 2526 LOAD_FAST                1 (cap)
+           2528 LOAD_METHOD             22 (release)
+           2550 PRECALL                  0
+           2554 CALL                     0
+           2564 POP_TOP
+
+477        2566 LOAD_GLOBAL              1 (NULL + cv2)
+           2578 LOAD_ATTR               23 (destroyAllWindows)
+           2588 PRECALL                  0
+           2592 CALL                     0
+           2602 POP_TOP
+
+478        2604 LOAD_GLOBAL              7 (NULL + print)
+           2616 LOAD_CONST              70 ('\n🛑 Monitoring stopped\n')
+           2618 PRECALL                  1
+           2622 CALL                     1
+           2632 POP_TOP
+           2634 LOAD_CONST               3 (None)
+           2636 RETURN_VALUE
+        >> 2638 PUSH_EXC_INFO
+
+480        2640 LOAD_GLOBAL             48 (Exception)
+           2652 CHECK_EXC_MATCH
+           2654 POP_JUMP_FORWARD_IF_FALSE    75 (to 2806)
+           2656 STORE_FAST              21 (e)
+
+481        2658 LOAD_GLOBAL              7 (NULL + print)
+           2670 LOAD_CONST              71 ('❌ Error in monitoring: ')
+           2672 LOAD_GLOBAL             51 (NULL + type)
+           2684 LOAD_FAST               21 (e)
+           2686 PRECALL                  1
+           2690 CALL                     1
+           2700 LOAD_ATTR               26 (__name__)
+           2710 FORMAT_VALUE             0
+           2712 LOAD_CONST              72 (': ')
+           2714 LOAD_FAST               21 (e)
+           2716 FORMAT_VALUE             0
+           2718 LOAD_CONST              46 ('\n')
+           2720 BUILD_STRING             5
+           2722 PRECALL                  1
+           2726 CALL                     1
+           2736 POP_TOP
+
+482        2738 LOAD_CONST               1 (0)
+           2740 LOAD_CONST               3 (None)
+           2742 IMPORT_NAME             27 (traceback)
+           2744 STORE_FAST              22 (traceback)
+
+483        2746 LOAD_FAST               22 (traceback)
+           2748 LOAD_METHOD             28 (print_exc)
+           2770 PRECALL                  0
+           2774 CALL                     0
+           2784 POP_TOP
+           2786 POP_EXCEPT
+           2788 LOAD_CONST               3 (None)
+           2790 STORE_FAST              21 (e)
+           2792 DELETE_FAST             21 (e)
+           2794 LOAD_CONST               3 (None)
+           2796 RETURN_VALUE
+        >> 2798 LOAD_CONST               3 (None)
+           2800 STORE_FAST              21 (e)
+           2802 DELETE_FAST             21 (e)
+           2804 RERAISE                  1
+
+480     >> 2806 RERAISE                  0
+        >> 2808 COPY                     3
+           2810 POP_EXCEPT
+           2812 RERAISE                  1
+ExceptionTable:
+  4 to 112 -> 2638 [0]
+  118 to 2632 -> 2638 [0]
+  2638 to 2656 -> 2808 [1] lasti
+  2658 to 2784 -> 2798 [1] lasti
+  2798 to 2806 -> 2808 [1] lasti
+
+Disassembly of <code object <lambda> at 0x0000014C980DFD70, file "C:\Users\ADMIN\Downloads\python\face_attendance_system\face_recognition_cv2.py", line 407>:
+407           0 RESUME                   0
+              2 LOAD_FAST                0 (x)
+              4 LOAD_CONST               1 (2)
+              6 BINARY_SUBSCR
+             16 LOAD_FAST                0 (x)
+             18 LOAD_CONST               2 (3)
+             20 BINARY_SUBSCR
+             30 BINARY_OP                5 (*)
+             34 RETURN_VALUE

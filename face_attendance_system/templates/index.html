@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-animated">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container glass-panel">
+        <header>
+            <h1><i class="fa-solid fa-face-viewfinder"></i> Face Attendance System</h1>
+            <p>Smart, seamless, and secure.</p>
+        </header>
+
+        <main class="dashboard">
+            <div class="left-panel">
+                <div class="controls glass-card">
+                    <button id="toggle-monitor" class="btn primary-btn pulse">
+                        <i class="fa-solid fa-camera"></i> <span id="monitor-text">Start Attendance</span>
+                    </button>
+                    <button id="open-register" class="btn secondary-btn">
+                        <i class="fa-solid fa-user-plus"></i> Register User
+                    </button>
+                </div>
+                
+                <div class="video-container glass-card">
+                    <div class="camera-placeholder" id="camera-placeholder">
+                        <i class="fa-solid fa-video-slash"></i>
+                        <p>Camera is Offline</p>
+                    </div>
+                    <img id="video-feed" src="" alt="Live Camera Feed" style="display: none;">
+                </div>
+
+                <div class="stats glass-card">
+                    <div class="stat-box">
+                        <i class="fa-solid fa-users"></i>
+                        <div>
+                            <h3>Registered Users</h3>
+                            <p id="stat-registered">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <div>
+                            <h3>Today's Attendance</h3>
+                            <p id="stat-today">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel glass-card">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Records</h2>
+                <div class="table-container">
+                    <table id="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>User ID</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-body">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close-btn">&times;</span>
+            <h2>Register New User</h2>
+            <form id="register-form">
+                <div class="input-group">
+                    <label for="reg-id">User ID</label>
+                    <input type="text" id="reg-id" required placeholder="Enter unique ID">
+                </div>
+                <div class="input-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" required placeholder="Enter full name">
+                </div>
+                <button type="submit" class="btn primary-btn" id="reg-submit-btn">
+                    <i class="fa-solid fa-camera"></i> Start Face Capture
+                </button>
+            </form>
+            <div id="reg-status" class="status-msg"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
